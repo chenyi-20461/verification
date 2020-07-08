@@ -46,9 +46,45 @@ public class UserController {
 			add(478171045174718466L);
 			add(478171045174718467L);
 		}};
-        for (int i = 0; i <6 ; i++) {
+        for (int i = 0; i < ids.size() ; i++) {
             User user=new User();
             user.setId(ids.get(i));
+            user.setName("test"+i);
+            user.setCityId(1%2==0?1:2);
+            user.setCreateTime(new Date());
+            user.setSex(i%2==0?1:2);
+            user.setPhone("11111111"+i);
+            user.setEmail("xxxxx");
+            user.setCreateTime(new Date());
+            user.setPassword("eeeeeeeeeeee");
+            user.setAddId((long)listAdd.get(i).get("id"));
+            userMapper.save(user);
+        }
+
+		return "success";
+	}
+	
+	@SuppressWarnings("serial")
+	@RequestMapping("/user/saveV2")
+	@ResponseBody
+	public String saveV2() throws Exception {
+		List<Map<String,Object>> listAdd = addressMapper.getAll();
+		if(ObjectUtils.isEmpty(listAdd)){
+			throw new Exception("请先插入Address表数据"); 
+		}
+		SnowFlake snowFlake = new SnowFlake(2, 3);
+		//模拟随机雪花算法id生成器每个库都有的数据测试
+//		List<Long> ids = new ArrayList<Long>(){{
+//			add(478171045170524160L);
+//			add(478171045170524161L);
+//			add(478171045174718464L);
+//			add(478171045174718465L);
+//			add(478171045174718466L);
+//			add(478171045174718467L);
+//		}};
+        for (int i = 0; i < listAdd.size() ; i++) {
+            User user=new User();
+            user.setId(snowFlake.nextId());
             user.setName("test"+i);
             user.setCityId(1%2==0?1:2);
             user.setCreateTime(new Date());
@@ -91,6 +127,12 @@ public class UserController {
 	public List<Map<String,Object>> getAllJoin() {
 		List<Map<String,Object>> userListJoin =  userMapper.getAllJoin();
 		return userListJoin;
+	}
+	
+	@RequestMapping("/user/getAllCount")
+	@ResponseBody
+	public Long getAllCount() {
+		return userMapper.getAllCount();
 	}
 }
 

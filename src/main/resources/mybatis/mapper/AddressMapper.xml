@@ -17,4 +17,8 @@
     <select id="getAll" resultType="map">
     	select id from t_address 
     </select>
+    
+    <select id="getAllCount" resultType="long">
+    	select count(*) from t_address 
+    </select>
 </mapper>

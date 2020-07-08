@@ -41,5 +41,11 @@ public class AddressController {
 	public Address get(@PathVariable Long id) {
 		return addressMapper.get(id);
 	}
+	
+	@RequestMapping("/address/getAllCount")
+	@ResponseBody
+	public Long getAllCount() {
+		return addressMapper.getAllCount();
+	}
 }
 

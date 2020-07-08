@@ -38,4 +38,10 @@ public interface UserMapper {
 	    @date 2020年7月7日 下午3:00:23
 	 */
 	List<Map<String,Object>> getAllJoin();
+	/**
+	 * 总数查询
+	 *  @author:heshengjin qq:2356899074
+	    @date 2020年7月8日 下午3:15:20
+	 */
+	Long getAllCount();
 }

@@ -25,4 +25,10 @@ public interface AddressMapper {
 	    @date 2020年7月7日 下午3:48:00
 	 */
 	List<Map<String,Object>> getAll();
+	/**
+	 * 总数查询
+	 *  @author:heshengjin qq:2356899074
+	    @date 2020年7月8日 下午3:15:20
+	 */
+	Long getAllCount();
 }

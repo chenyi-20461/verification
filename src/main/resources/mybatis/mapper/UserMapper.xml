@@ -15,10 +15,10 @@
 	</resultMap>
 	
     <insert id="save" parameterType="User">
-        INSERT INTO t_user(id,name,phone,email,city_id,sex,password)
+        INSERT INTO t_user(id,name,phone,email,city_id,sex,password,add_id)
         VALUES
         (
-        #{id},#{name},#{phone},#{email},#{cityId},#{sex},#{password}
+        #{id},#{name},#{phone},#{email},#{cityId},#{sex},#{password},#{addId}
         )
     </insert>
     
@@ -37,5 +37,9 @@
     
     <select id="getAllJoin" resultType="map">
     	select * from t_user u inner join t_address ad on (u.add_id = ad.id)
+    </select>
+    
+    <select id="getAllCount" resultType="long">
+    	select count(*) from t_user 
     </select>
 </mapper>
