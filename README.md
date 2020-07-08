@@ -7,7 +7,7 @@ sharding-springboot-mybatis
 
  **_单库分表【application-table.yml】【可以跨库join操作】_** ，1个库：test_order2,库里面7张表:t_address/t_user0/t_user1/t_user2/t_user3/t_user4/t_user5
 
-雪花算法根据主键id取模hash；
+雪花算法【new SnowFlake(2, 3).nextId()】根据主键id取模hash；
 
 分库分表：库分片算法：id%2；表分片算法：id/2%2;
 
