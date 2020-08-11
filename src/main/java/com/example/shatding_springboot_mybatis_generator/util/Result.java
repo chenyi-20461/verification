@@ -23,26 +23,28 @@ public class Result {
 
     private Object data;
 
-    public static Result success() {
-        return success(null);
+    public static Result error() {
+    	return Result.builder().code(1).desc("失败").build();
     }
-
-    public static Result success(Object data) {
-        return Result.builder().code(0).desc("操作成功").data(data).build();
+    public static Result error(int code) {
+    	return Result.builder().code(code).desc("失败").build();
     }
-
+    public static Result error(String desc) {
+        return Result.builder().code(1).desc(desc).build();
+    }
     public static Result error(int code, String desc) {
         return Result.builder().code(code).desc(desc).build();
     }
-
-    public static Result error(int code) {
-        return error(code, "操作失败");
-    }
     
+    public static Result success() {
+        return  Result.builder().code(0).desc("成功").build();
+    }
+    public static Result success(Object data) {
+        return Result.builder().code(0).desc("成功").data(data).build();
+    }
     public static Result success(String desc) {
         return Result.builder().code(0).desc(desc).build();
-    }
-    
+    } 
     public static Result success(Object data, String desc) {
         return Result.builder().code(0).desc(desc).data(data).build();
     }

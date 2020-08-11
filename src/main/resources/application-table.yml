@@ -10,7 +10,7 @@ spring:
         ds2:
           type: com.alibaba.druid.pool.DruidDataSource
           driver-class-name: com.mysql.jdbc.Driver
-          url: jdbc:mysql://localhost:3307/test_order2?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+          url: jdbc:mysql://localhost:3306/test_order2?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
           username: root
           password: HSJissmart1
       sharding:

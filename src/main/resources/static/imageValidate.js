@@ -1,37 +1,28 @@
+//x周=轴线滑动的距离
 var left_binarydance = 0;
-var positionX = 0;
+//参数
+var testParams = '手机号13518705742'
 $(function(){
     // 初始化图片验证码
-    initImageValidate();
+    initImageValidate(testParams);
 
     /* 初始化按钮拖动事件 */
     
     $("#sliderInner-capture-bd").Tdrag({
         scope:".outer-capture-bd",
         axis:"x",
-        cbStart:function(ev){//移动前的回调函数
-            //console.log(ev.clientX);
+        cbStart:function(obj,self,ev){//移动前的回调函数
         },
 
         cbMove:function(obj,self,ev){//移动中的回调函数
-            //console.log(ev.clientX);
-            left_binarydance = ev.clientX;
-            if(left_binarydance >= 67 && left_binarydance <= 563){
-                $("#sliderInner-capture-bd").css("left",(left_binarydance-67)+"px");
-                $("#slideImage-capture-bd").css("left",(left_binarydance-67)+"px");
-            }
+            left_binarydance = obj.offsetLeft;
+            $("#sliderInner-capture-bd").css("left",(left_binarydance)+"px");
+            $("#slideImage-capture-bd").css("left",(left_binarydance)+"px");
         },
 
-        cbEnd:function(ev){//移动结束时候的回调函数
-            left_binarydance = 67;
-            console.log(ev.clientX - 67 == positionX ? 'true' : 'false');
-            //失败回到原地
-            if(!(ev.clientX - 67 == positionX)){
-                $("#sliderInner-capture-bd").css("left",(left_binarydance-67)+"px");
-                $("#slideImage-capture-bd").css("left",(left_binarydance-67)+"px");
-                $("#container-capture-bd").shake(2, 10, 400);
-            }
-            //checkImageValidate();
+        cbEnd:function(obj,self,ev){//移动结束时候的回调函数
+            left_binarydance = obj.offsetLeft;
+            checkImageValidate(testParams);
         }
     });
 
@@ -49,58 +40,54 @@ jQuery.fn.shake = function (intShakes /*Amount of shakes*/, intDistance /*Shake 
     });
     return this;
 }
-
-function initImageValidate(){
+//服务器生成图片
+function initImageValidate(param){
     $.ajax({
         async : false,
         type : "POST",
         url : "/capture/img",
         dataType: "json",
         data:{
-            telephone:'13518705742'
+        	param:param
         },
         success : function(data) {
             if(data.code  ==  0){
                 // 设置图片的src属性
                 $("#validateImage-capture-bd").attr("src", data.data.oriCopyImage);
                 $("#slideImage-capture-bd").attr("src", data.data.newImage);
-                //X位置
-                positionX = data.data.positionXy.x;
-            }else{
-                layer.open({
-                    icon:2,
-                    title: "温馨提示",
-                    content: data.info
-                });
             }
         },
         error : function() {}
     });
 }
-
+//点击按钮请求切换图片
 function exchange(){
-    initImageValidate();
+    initImageValidate(testParams);
 }
 
-// 校验
-function checkImageValidate(){
+//服务器校验
+function checkImageValidate(param){
     $.ajax({
         async : false,
         type : "POST",
         url : "/capture/checkImgValidate",
         dataType: "json",
         data:{
-            telephone:'13518705742',
-            offsetHorizontal:left_binarydance
+        	param:param,
+        	offsetHorizontalX:left_binarydance
         },
         success : function(data) {
-            if(data.status == 0){
-                $("#operateResult-capture-bd").html(data.info).css("color","#28a745");
+        	//0成功，!0失败
+            if(data.code == 0){
+                $("#operateResult-capture-bd").html(data.desc).css("cssText","color:lightpink!important;");
             }else{
-                $("#operateResult-capture-bd").html(data.info).css("color","#dc3545");
+                $("#operateResult-capture-bd").html(data.desc).css("cssText","color:red!important;");
                 // 验证未通过，将按钮和拼图恢复至原位置
                 $("#sliderInner-capture-bd").animate({"left":"0px"},200);
                 $("#slideImage-capture-bd").animate({"left":"0px"},200);
+                //震动
+                $("#container-capture-bd").shake(4, 20, 400);
+
             }
         },
         error : function() {}

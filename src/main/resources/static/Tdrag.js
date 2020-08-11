@@ -163,7 +163,7 @@
                 self.disX = oEvent.clientX - obj.offsetLeft;
                 self.disY = oEvent.clientY - obj.offsetTop;
                 $(obj).css("zIndex",self.zIndex++);
-                self.options.cbStart(ev);
+                self.options.cbStart(obj,self,ev);
             },
             move: function (ev, obj) {
                 var self = this;
@@ -224,7 +224,7 @@
                 if(self.options.pos==true){
                     self.animation(obj, self.aPos[$(obj).attr("index")]);
                 }
-                self.options.cbEnd(ev);
+                self.options.cbEnd(obj,self,ev);
                 if(self.options.handle!=null){
                     $(obj).find(self.options.handle).unbind("onmousemove");
                     $(obj).find(self.options.handle).unbind("onmouseup");

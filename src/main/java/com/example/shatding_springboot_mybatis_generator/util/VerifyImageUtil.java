@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
@@ -26,6 +27,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.core.io.ClassPathResource;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.shatding_springboot_mybatis_generator.config.SpringContextUtil;
 /**
  * 滑块验证工具类
  * @author : spirit
@@ -55,6 +57,8 @@ public class VerifyImageUtil {
     public static int CLASSPATHURL_TEMPLATE_LENGTH = 4;
     public static int CLASSPATHURL_TARGET_LENGTH = 20;
     public static int CLASSPATHURL_TEMPLATE_TARGET_LENGTH_START = 1;
+    //存放最大10分钟
+    private static int MINUTES_10 = 10;
     public static int getX() {
         return X;
     }
@@ -62,9 +66,6 @@ public class VerifyImageUtil {
     public static int getY() {
         return Y;
     }
-    public static void main(String[] args) throws Exception {
-		System.out.println(pictureTemplatesCut(new ClassPathResource(String.format(CLASSPATHURL_TEMPLATE, getTemplateIndex())).getFile(), new ClassPathResource(String.format(CLASSPATHURL_TARGET, getTargetIndex())).getFile(), CLASSPATHURL_TEMPLATE_EX_PNG, CLASSPATHURL_TARGET_EX_JPG));
-	}
     public static int getTemplateIndex() {
          Random random = new Random();
          return random.nextInt(CLASSPATHURL_TEMPLATE_LENGTH)%(CLASSPATHURL_TEMPLATE_LENGTH-CLASSPATHURL_TEMPLATE_TARGET_LENGTH_START + 1) + CLASSPATHURL_TEMPLATE_TARGET_LENGTH_START;
@@ -82,7 +83,7 @@ public class VerifyImageUtil {
      * @return 切图map集合
      * @throws Exception 异常
      */
-	public static Map<String, Object> pictureTemplatesCut(File templateFile, File targetFile, String templateType, String targetType) throws Exception {
+	public static Map<String, Object> pictureTemplatesCut(File templateFile, File targetFile, String templateType, String targetType,String param) throws Exception {
         Map<String, Object> pictureMap = new HashMap<>(2);
         if (templateType == null || targetType == null) {
             throw new RuntimeException("file type is empty");
@@ -125,7 +126,10 @@ public class VerifyImageUtil {
         pictureMap.put("oriCopyImage", BASE64_CAPTURE + Base64.encodeBase64String(oriCopyImages));
 //        System.out.println("X="+X+";y="+Y);
         //位置
-        pictureMap.put("positionXy", new JSONObject(){{put("x", X);put("y",Y);}});
+//        pictureMap.put("positionXy", new JSONObject(){{put("x", X);put("y",Y);}});
+        //存入redis,10分钟有效
+        RedisUtil redisUtil = SpringContextUtil.getBean(RedisUtil.class);
+        redisUtil.set(param.trim(), X, TimeUnit.MINUTES.toSeconds(MINUTES_10));
         return pictureMap;
     }
 

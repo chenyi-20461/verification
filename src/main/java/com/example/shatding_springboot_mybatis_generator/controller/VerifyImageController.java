@@ -1,20 +1,14 @@
 package com.example.shatding_springboot_mybatis_generator.controller;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Map;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.shatding_springboot_mybatis_generator.util.RedisUtil;
 import com.example.shatding_springboot_mybatis_generator.util.Result;
 import com.example.shatding_springboot_mybatis_generator.util.VerifyImageUtil;
 /**
@@ -25,25 +19,50 @@ import com.example.shatding_springboot_mybatis_generator.util.VerifyImageUtil;
  */
 @RestController
 public class VerifyImageController {
-	
+	@Autowired
+	private RedisUtil redisUtil;
+	/**
+	 * 
+	 * @Title: captureImg   
+	 * @Description: TODO(抠图)   
+	 * @param: @param httpServletResponse
+	 * @param: @param httpServletRequest
+	 * @param: @return
+	 * @param: @throws Exception      
+	 * @return: Result      
+	 * @throws
+	 */
 	@SuppressWarnings("static-access")
 	@RequestMapping("/capture/img")
-	public Result captureImg(HttpServletResponse httpServletResponse,HttpServletRequest httpServletRequest) throws Exception{
+	public Result captureImg(@RequestParam("param") String param) throws Exception{
 			   Map<String, Object> captureImgTemp = VerifyImageUtil.pictureTemplatesCut(
 					   new ClassPathResource(String.format(VerifyImageUtil.CLASSPATHURL_TEMPLATE, VerifyImageUtil.getTemplateIndex())).getFile(),
 					   new ClassPathResource(String.format(VerifyImageUtil.CLASSPATHURL_TARGET, VerifyImageUtil.getTargetIndex())).getFile(),
 					   VerifyImageUtil.CLASSPATHURL_TEMPLATE_EX_PNG,
-					   VerifyImageUtil.CLASSPATHURL_TARGET_EX_JPG);
-//				ServletOutputStream out;
-//		        out = httpServletResponse.getOutputStream();
-		        //oriCopyImage（有抠图的图片） newImage（滑块）
-//		        out.write(captureImgTemp.get("newImage"));
-//		        out.flush();
-//		        out.write((Byte)captureImgTemp.get("oriCopyImage"));
-//		        out.flush();
-//		        out.close();
-                                
+					   VerifyImageUtil.CLASSPATHURL_TARGET_EX_JPG,
+					   param);                               
 		 return  new Result().success(captureImgTemp);
 	}
-	
+	/**
+	 * 
+	 * @Title: captureCheckImgValidate   
+	 * @Description: TODO(校验：0成功，!0失败)   
+	 * @param: @param param
+	 * @param: @param x
+	 * @param: @return
+	 * @param: @throws Exception      
+	 * @return: Result      
+	 * @throws
+	 */
+	@SuppressWarnings("static-access")
+	@RequestMapping("/capture/checkImgValidate")
+	public Result captureCheckImgValidate(@RequestParam("param") String param,@RequestParam("offsetHorizontalX") Integer offsetHorizontalX) throws Exception{
+		int x = (int) redisUtil.get(param.trim());
+		if(x == offsetHorizontalX){
+			//校验成功，删除
+			redisUtil.del(param.trim());
+			return new Result().success("手速快又准，恭喜你验证成功！");
+		}
+		return new Result().error("非常遗憾，验证失败了，再试一次吧！");                                 
+	}
 }

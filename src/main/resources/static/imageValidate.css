@@ -1,8 +1,12 @@
 body{
     overflow: hidden;
 }
+#operateResult-capture-bd{
+	color:lightpink !important;
+}
 #container-capture-bd{
     width: 100%;
+    position: relative;
 }
 .fontDiv-capture-bd{
     margin: 16px 0;
@@ -18,7 +22,19 @@ body{
     position: relative;
 }
 .resultDiv-capture-bd{
-    margin: 10px 20px;
+    margin: 10px 20px;    
+    text-align: center;   
+}
+.resultDiv-capture-bd btn{   
+    box-shadow: 0 0 10px 5px #F9F2FA; 
+    background-color: lightpink; 
+}
+.resultDiv-capture-bd i{   
+    box-shadow: 0 0 10px 5px #F9F2FA !important;  
+    color: lightpink !important; 
+}
+.op-capture-bd{
+	text-align: left;  
 }
 #validateImage-capture-bd{
     border-radius: 4px;
@@ -33,7 +49,7 @@ body{
     height: 40px;
     margin: 12px auto;
     border-radius: 20px;
-    box-shadow: 0 0 10px 5px darkgrey;
+    box-shadow: 0 0 10px 5px #F9F2FA;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -44,7 +60,7 @@ body{
     height: 40px;
     position: absolute;
     font-size: 16px;
-    color: dodgerblue;
+    color: lightpink;
     text-align: center;
     line-height: 40px;
     -webkit-user-select: none;
@@ -53,11 +69,11 @@ body{
     user-select: none;
 }
 #sliderInner-capture-bd{
-    width: 94px;
+    width: 93px;
     height: 40px;
     border-radius: 20px;
     font-size: 2rem;
-    background-color: #28a745;
+    background-color: lightpink;
     cursor: pointer;
     position: absolute;
     left: 0;
