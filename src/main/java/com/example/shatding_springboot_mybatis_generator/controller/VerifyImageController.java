@@ -34,13 +34,13 @@ public class VerifyImageController {
 	 */
 	@SuppressWarnings("static-access")
 	@RequestMapping("/capture/img")
-	public Result captureImg(@RequestParam("param") String param) throws Exception{
+	public Result captureImg() throws Exception{
 			   Map<String, Object> captureImgTemp = VerifyImageUtil.pictureTemplatesCut(
 					   new ClassPathResource(String.format(VerifyImageUtil.CLASSPATHURL_TEMPLATE, VerifyImageUtil.getTemplateIndex())).getFile(),
 					   new ClassPathResource(String.format(VerifyImageUtil.CLASSPATHURL_TARGET, VerifyImageUtil.getTargetIndex())).getFile(),
 					   VerifyImageUtil.CLASSPATHURL_TEMPLATE_EX_PNG,
-					   VerifyImageUtil.CLASSPATHURL_TARGET_EX_JPG,
-					   param);                               
+					   VerifyImageUtil.CLASSPATHURL_TARGET_EX_JPG
+					  );                               
 		 return  new Result().success(captureImgTemp);
 	}
 	/**
@@ -56,11 +56,11 @@ public class VerifyImageController {
 	 */
 	@SuppressWarnings("static-access")
 	@RequestMapping("/capture/checkImgValidate")
-	public Result captureCheckImgValidate(@RequestParam("param") String param,@RequestParam("offsetHorizontalX") Integer offsetHorizontalX) throws Exception{
-		int x = (int) redisUtil.get(param.trim());
+	public Result captureCheckImgValidate(@RequestParam("acptureUuid") String acptureUuid,@RequestParam("offsetHorizontalX") Integer offsetHorizontalX) throws Exception{
+		int x = (int) redisUtil.get(acptureUuid.trim());
 		if(x == offsetHorizontalX){
 			//校验成功，删除
-			redisUtil.del(param.trim());
+			redisUtil.del(acptureUuid.trim());
 			return new Result().success("手速快又准，恭喜你验证成功！");
 		}
 		return new Result().error("非常遗憾，验证失败了，再试一次吧！");                                 

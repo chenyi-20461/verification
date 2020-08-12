@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
@@ -83,7 +84,7 @@ public class VerifyImageUtil {
      * @return 切图map集合
      * @throws Exception 异常
      */
-	public static Map<String, Object> pictureTemplatesCut(File templateFile, File targetFile, String templateType, String targetType,String param) throws Exception {
+	public static Map<String, Object> pictureTemplatesCut(File templateFile, File targetFile, String templateType, String targetType) throws Exception {
         Map<String, Object> pictureMap = new HashMap<>(2);
         if (templateType == null || targetType == null) {
             throw new RuntimeException("file type is empty");
@@ -126,10 +127,11 @@ public class VerifyImageUtil {
         pictureMap.put("oriCopyImage", BASE64_CAPTURE + Base64.encodeBase64String(oriCopyImages));
 //        System.out.println("X="+X+";y="+Y);
         //位置
-//        pictureMap.put("positionXy", new JSONObject(){{put("x", X);put("y",Y);}});
-        //存入redis,10分钟有效
+        String acptureUuid = UUID.randomUUID().toString();
+        pictureMap.put("acptureUuid", acptureUuid);
+        //当前产生的图片X偏移存入redis,10分钟有效
         RedisUtil redisUtil = SpringContextUtil.getBean(RedisUtil.class);
-        redisUtil.set(param.trim(), X, TimeUnit.MINUTES.toSeconds(MINUTES_10));
+        redisUtil.set(acptureUuid, X, TimeUnit.MINUTES.toSeconds(MINUTES_10));
         return pictureMap;
     }
 
