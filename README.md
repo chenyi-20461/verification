@@ -1,4 +1,4 @@
-# sharding-jdbc springboot mybatis分库分表demo示例
+# sharding-jdbc springboot mybatis分库分表、图片滑动验证（服务端生成抠图、滑块和X轴偏移量，前端获取用户拖动X轴偏移量，传入服务端并校验）demo示例
 
 #### 介绍
 sharding-springboot-mybatis
