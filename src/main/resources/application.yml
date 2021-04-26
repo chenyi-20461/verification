@@ -8,12 +8,13 @@ spring:
   profiles: 
     active: table  #引入另外一个同路径下yml配置文件，该配置文件必须以application-开头
   redis:
-    host: 127.0.0.1
+#    host: 127.0.0.1
+
   # port: 6379
-    port: 6739
+    port: 6379
     timeout: 20000
   # password: HSJissmart1
-    password: xfxMaster973339_2018
+    password: bk_framework@456!
     pool:
       max-active: 8
       min-idle: 0

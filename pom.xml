@@ -12,7 +12,7 @@
     <groupId>com.example</groupId>
     <artifactId>shatding-springboot-mybatis-generator</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>shatding-springboot-mybatis-generator</name>
+    <name>verification</name>
     <description>SpringBoot2.x整合MyBatisGenerator 以及分库分表插件(还没有整合MyBatisGenerator，待做...)</description>
 
     <properties>
